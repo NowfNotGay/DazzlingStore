@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace DazzlingStore.Controllers;
+[Route("home")]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -12,6 +13,9 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    [HttpGet]
+    [Route("~/")]
+    [Route("index")]
     public IActionResult Index()
     {
         return View();
