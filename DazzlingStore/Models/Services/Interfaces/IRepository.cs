@@ -7,13 +7,14 @@ public interface IRepository <T>
 
     // Lấy tất cả các đối tượng
     IEnumerable<T> GetAll();
+    Task<IEnumerable<T>> GetAllAsync();
 
     // Thêm một đối tượng vào cơ sở dữ liệu
-    void Add(T entity);
+    bool Add(T entity);
 
     // Cập nhật thông tin của một đối tượng
-    void Update(T entity);
+    bool Update(T entity);
 
     // Xóa một đối tượng khỏi cơ sở dữ liệu
-    void Delete(T entity);
+    bool Delete(T entity);
 }

@@ -14,10 +14,11 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    [Route("~/")]
+    [Route("/")]
     [Route("index")]
     public IActionResult Index()
     {
+        ViewData["Title"] = "Trang chủ";
         return View();
     }
 
