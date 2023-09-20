@@ -15,11 +15,7 @@ public class RoleRepository : IRepository<Role>
         _databaseContext = databaseContext;
     }
 
-    /// <summary>
-    /// Thêm một đối tượng Role vào cơ sở dữ liệu.
-    /// </summary>
-    /// <param name="entity">Đối tượng Role cần thêm.</param>
-    /// <returns>Trả về true nếu thêm thành công, ngược lại trả về false.</returns>
+
     public bool Add(Role entity)
     {
         try
@@ -39,12 +35,6 @@ public class RoleRepository : IRepository<Role>
         }
     }
 
-
-    /// <summary>
-    /// Xóa một đối tượng Role khỏi cơ sở dữ liệu nếu được phép.
-    /// </summary>
-    /// <param name="entity">Đối tượng Role cần xóa.</param>
-    /// <returns>Trả về true nếu xóa thành công hoặc nếu không cần xóa, ngược lại trả về false.</returns>
     public bool Delete(Role entity)
     {
         try
@@ -66,36 +56,13 @@ public class RoleRepository : IRepository<Role>
         }
     }
 
-    /// <summary>
-    /// Lấy tất cả các đối tượng Role từ cơ sở dữ liệu.
-    /// </summary>
-    /// <returns>Danh sách các đối tượng Role.</returns>
+    // Lấy tất cả các Role đang có
     public IEnumerable<Role> GetAll() => _databaseContext.Roles;
 
 
-    /// <summary>
-    /// Lấy toàn bộ danh sách các Role từ cơ sở dữ liệu bất đồng bộ.
-    /// </summary>
-    /// <returns>Chuỗi danh sách các Role.</returns>
-    public async Task<IEnumerable<Role>> GetAllAsync() => await _databaseContext.Roles.ToListAsync();
-
-
-
-
-    /// <summary>
-    /// Lấy một đối tượng Role từ cơ sở dữ liệu dựa trên ID.
-    /// </summary>
-    /// <param name="id">ID của đối tượng Role cần lấy.</param>
-    /// <returns>Đối tượng Role tương ứng với ID hoặc null nếu không tìm thấy.</returns>
+    // Lấy Role phù hợp với Id
     public Role GetById(int id) => _databaseContext.Roles.Find(id)!;
 
-
-
-    /// <summary>
-    /// Cập nhật thông tin một đối tượng Role trong cơ sở dữ liệu.
-    /// </summary>
-    /// <param name="entity">Đối tượng Role cần cập nhật.</param>
-    /// <returns>Trả về true nếu cập nhật thành công, ngược lại trả về false.</returns>
     public bool Update(Role entity)
     {
         try
