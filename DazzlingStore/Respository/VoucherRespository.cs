@@ -1,5 +1,5 @@
 ﻿namespace DazzlingStore.Respository;
 
-public class SocialRespository
+public class VoucherRespository
 {
 }

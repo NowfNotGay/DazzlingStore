@@ -1,5 +1,5 @@
 ﻿namespace DazzlingStore.Respository;
 
-public class Class
+public class OrderRespository
 {
 }

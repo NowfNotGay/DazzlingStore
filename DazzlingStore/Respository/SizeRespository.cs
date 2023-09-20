@@ -1,5 +1,31 @@
-﻿namespace DazzlingStore.Respository;
+﻿using DazzlingStore.Models.Services.Interfaces;
 
-public class SizeRespository
+namespace DazzlingStore.Respository;
+
+public class SizeRespository<T> : IRepository<T>
 {
+    public void Add(T entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Delete(T entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<T> GetAll()
+    {
+        throw new NotImplementedException();
+    }
+
+    public T GetById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Update(T entity)
+    {
+        throw new NotImplementedException();
+    }
 }
