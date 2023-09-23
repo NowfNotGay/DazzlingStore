@@ -40,7 +40,12 @@ public class RoleRepositoryAsyn : IRepositoryAsyn<Role>
         try
         {
             // Xóa đối tượng Role vào DbSet trong cơ sở dữ liệu bằng cách sử dụng async.
-            _databaseContext.Roles.Remove(entity);
+
+            if (entity.IsDeleted == true)
+            {
+                _databaseContext.Roles.Remove(entity);
+
+            }
 
             // Lưu thay đổi vào cơ sở dữ liệu và kiểm tra xem có bất kỳ dòng nào bị ảnh hưởng (sử dụng async).
             var affectedRows = await _databaseContext.SaveChangesAsync();

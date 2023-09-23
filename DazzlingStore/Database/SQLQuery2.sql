@@ -1,4 +1,4 @@
-﻿User
+﻿
 USE master;
 GO
 
@@ -53,8 +53,7 @@ DROP TABLE IF EXISTS AccountRole
 CREATE TABLE AccountRole (
   AccountId INT NOT NULL,
   RoleId INT NOT NULL,
-  CreatedAt DATETIME DEFAULT GETDATE(),
-  UpdatedAt DATETIME DEFAULT GETDATE(),
+  IsDeleted BIT DEFAULT 1,
   PRIMARY KEY (AccountId, RoleId),
   FOREIGN KEY (AccountId) REFERENCES Account(Id),
   FOREIGN KEY (RoleId) REFERENCES Role(Id),
@@ -72,6 +71,7 @@ CREATE TABLE [AddressProfile] (
   Ward NVARCHAR(200) NOT NULL,
   District NVARCHAR(200) NOT NULL,
   City NVARCHAR(200) NOT NULL,
+  IsDeleted BIT DEFAULT 1,
   CreatedAt DATETIME DEFAULT GETDATE(),
   UpdatedAt DATETIME DEFAULT GETDATE(),
   FOREIGN KEY (AccountId) REFERENCES Account(Id),
@@ -84,8 +84,9 @@ GO
 DROP TABLE IF EXISTS Category
 CREATE TABLE Category (
   Id INT PRIMARY KEY IDENTITY,
-  [Name] INT NOT NULL,
+  [Name] NVARCHAR NOT NULL,
   ParentId INT NOT NULL,
+  IsDeleted BIT DEFAULT 1,
   CreatedAt DATETIME DEFAULT GETDATE(),
   UpdatedAt DATETIME DEFAULT GETDATE(),
   FOREIGN KEY (ParentId) REFERENCES Category(Id),
@@ -97,6 +98,7 @@ CREATE TABLE Size (
   Id INT PRIMARY KEY IDENTITY,
   Name NVARCHAR(200) NOT NULL,
   Description NVARCHAR(255),
+  IsDeleted BIT DEFAULT 1,
   CreatedAt DATETIME DEFAULT GETDATE(),
   UpdatedAt DATETIME DEFAULT GETDATE()
 )
@@ -106,6 +108,7 @@ CREATE TABLE Color (
   Id INT PRIMARY KEY IDENTITY,
   Name NVARCHAR(200) NOT NULL,
   HexCode VARCHAR(7),
+  IsDeleted BIT DEFAULT 1,
   CreatedAt DATETIME DEFAULT GETDATE(),
   UpdatedAt DATETIME DEFAULT GETDATE()
 )
@@ -117,8 +120,7 @@ CREATE TABLE Product (
   [Name] NVARCHAR(200) NOT NULL,
   SubDescription NTEXT,
   Description NTEXT,
-  CreatedAt DATETIME DEFAULT GETDATE(),
-  UpdatedAt DATETIME DEFAULT GETDATE()
+  IsDeleted BIT DEFAULT 1
 )
 GO
 
@@ -128,6 +130,7 @@ CREATE TABLE ProductImage (
   [Image] NVARCHAR(200) NOT NULL,
   IndexOf INT,
   ProductId INT NOT NULL,
+  IsDeleted BIT DEFAULT 1,
   CreatedAt DATETIME DEFAULT GETDATE(),
   UpdatedAt DATETIME DEFAULT GETDATE(),
   FOREIGN KEY (ProductId) REFERENCES Product(Id)
@@ -138,6 +141,7 @@ DROP TABLE IF EXISTS ProductCategory
 CREATE TABLE ProductCategory (
   ProductId INT NOT NULL,
   CategoryId INT NOT NULL,
+  IsDeleted BIT DEFAULT 1,
   CreatedAt DATETIME DEFAULT GETDATE(),
   UpdatedAt DATETIME DEFAULT GETDATE(),
   PRIMARY KEY (ProductId, CategoryId),
@@ -154,7 +158,7 @@ CREATE TABLE ProductItem (
   SizeId INT NOT NULL,
   ColorId INT NOT NULL,
   -- đặc điểm của 1 item 
-  Quantity INT NOT NULL,
+  Quantity INT NOT NULL, -- chỉ superadmin được coi 
   Price INT NOT NULL, -- Giá nhập
   Cost INT NOT NULL, -- Giá bán ra
   SaleCost INT NOT NULL,-- Giá bán ra đã giảm
@@ -163,6 +167,7 @@ CREATE TABLE ProductItem (
   [Hot] BIT NOT NULL,
   Sale BIT DEFAULT 0,
   --Phụ
+  IsDeleted BIT DEFAULT 1,
   CreatedAt DATETIME DEFAULT GETDATE(),
   UpdatedAt DATETIME DEFAULT GETDATE(),
   FOREIGN KEY (ProductId) REFERENCES Product(Id),
@@ -183,6 +188,7 @@ CREATE TABLE Review (
 	Rating TINYINT NOT NULL,
 	CreatedAt DATETIME DEFAULT GETDATE(),
 	UpdatedAt DATETIME DEFAULT GETDATE(),
+	IsDeleted BIT DEFAULT 1,
 	FOREIGN KEY (AccountId) REFERENCES Account(Id),
 	FOREIGN KEY (ProductId) REFERENCES Product(Id)
 )
@@ -199,6 +205,7 @@ CREATE TABLE Event (
 	Description NTEXT,
 	StartTime DATETIME NOT NULL, -- thời gian bắt đầu sự kiện
 	StartEnd DATETIME NOT NULL, -- thời gian kết thúc sự kiện
+	IsDeleted BIT DEFAULT 1,
  	CreatedAt DATETIME DEFAULT GETDATE(),
 	UpdatedAt DATETIME DEFAULT GETDATE(),
 )
@@ -211,8 +218,7 @@ CREATE TABLE EventDetail (
 	Price INT NOT NULL,-- Giá bán ra đã giảm
 	LimitedQuantity INT NOT NULL, -- Số lượng giới hạn giảm giá
 	RemainingQuantity INT NOT NULL, -- Số lượng còn lại
- 	CreatedAt DATETIME DEFAULT GETDATE(),
-	UpdatedAt DATETIME DEFAULT GETDATE(),
+ 	IsDeleted BIT DEFAULT 1,
 	PRIMARY KEY(ProductItemId,EventId),
 	FOREIGN KEY (ProductItemId) REFERENCES ProductItem(Id),
 	FOREIGN KEY (EventId) REFERENCES Event(Id)
@@ -227,6 +233,7 @@ CREATE TABLE Wishlist (
     AccountId INT NOT NULL, -- Thông tin người dùng đang sử dụng wishlist
     ProductItemId INT NOT NULL, -- Sản phẩm được thêm vào wishlist
     AddedAt DATETIME DEFAULT GETDATE(), -- Thời gian khi sản phẩm được thêm vào wishlist
+	IsDeleted BIT DEFAULT 1,
     FOREIGN KEY (AccountId) REFERENCES Account(Id), -- Ràng buộc ngoại
     FOREIGN KEY (ProductItemId) REFERENCES ProductItem(Id) -- Ràng buộc ngoại
 )
@@ -238,6 +245,7 @@ CREATE TABLE OrderStatus (
   Id INT PRIMARY KEY IDENTITY,
   Name VARCHAR(100) NOT NULL,
   Description NTEXT,
+  IsDeleted BIT DEFAULT 1,
   CreatedAt DATETIME DEFAULT GETDATE(),
   UpdatedAt DATETIME DEFAULT GETDATE(),	
 )
@@ -250,6 +258,7 @@ CREATE TABLE PaymentMethod (
 	Status BIT NOT NULL,
 	Icon NVARCHAR(200) NOT NULL,
 	Description NTEXT,
+	IsDeleted BIT DEFAULT 1,
 	CreatedAt DATETIME DEFAULT GETDATE(),
 	UpdatedAt DATETIME DEFAULT GETDATE()
 )
@@ -266,6 +275,7 @@ CREATE TABLE Invoice (
     DueDate DATETIME,
     Status BIT NOT NULL,
     Description NVARCHAR(MAX),
+	IsDeleted BIT DEFAULT 1,
     CreatedAt DATETIME DEFAULT GETDATE(),
     UpdatedAt DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (AccountId) REFERENCES Account(Id),
@@ -279,8 +289,9 @@ CREATE TABLE InvoiceDetail (
 	ProductItemId INT NOT NULL,
 	Quantity INT NOT NULL,
 	Cost INT NOT NULL,
-	CreatedAt DATETIME NOT NULL DEFAULT GETDATE(),
-	UpdatedAt DATETIME NOT NULL DEFAULT GETDATE(),
+	IsDeleted BIT DEFAULT 1,
+	CreatedAt DATETIME DEFAULT GETDATE(),
+    UpdatedAt DATETIME DEFAULT GETDATE(),
 	PRIMARY KEY (InvoiceId,ProductItemId),
 	FOREIGN KEY (InvoiceId) REFERENCES Invoice(Id),
 	FOREIGN KEY (ProductItemId) REFERENCES ProductItem(Id),
@@ -299,7 +310,8 @@ CREATE TABLE Voucher (
     TimeStart DATETIME NOT NULL DEFAULT GETDATE(),
     TimeEnd DATETIME NOT NULL,
     Status BIT NOT NULL DEFAULT 1, -- Trạng thái hoạt động (1: hoạt động, 0: không hoạt động)
-    CreatedAt DATETIME NOT NULL DEFAULT GETDATE(),
+    IsDeleted BIT DEFAULT 1,
+	CreatedAt DATETIME NOT NULL DEFAULT GETDATE(),
     UpdatedAt DATETIME NOT NULL DEFAULT GETDATE()
 )
 GO
@@ -317,6 +329,7 @@ CREATE TABLE Orders (
   OrderDate DATETIME NOT NULL DEFAULT GETDATE(), -- Thêm trường ngày đặt hàng
   ShippingDate DATETIME, -- Thêm trường ngày giao hàng (nếu cần)
   Note NTEXT, -- Thêm trường ghi chú đơn hàng
+  IsDeleted BIT DEFAULT 1,
   CreatedAt DATETIME NOT NULL DEFAULT GETDATE(),
   UpdatedAt DATETIME NOT NULL DEFAULT GETDATE(),
   FOREIGN KEY (AccountId) REFERENCES Account(Id),
@@ -335,8 +348,9 @@ CREATE TABLE OrderDetail (
 	ProductItemId INT NOT NULL,
 	Quantity DECIMAL(18,2) NOT NULL,
 	Cost INT NOT NULL,
-	CreatedAt DATETIME NOT NULL DEFAULT GETDATE(),
-	UpdatedAt DATETIME NOT NULL DEFAULT GETDATE(),
+	IsDeleted BIT DEFAULT 1,
+	CreatedAt DATETIME DEFAULT GETDATE(),
+	UpdatedAt DATETIME DEFAULT GETDATE(),
 	PRIMARY KEY (OrderId,ProductItemId),
 	FOREIGN KEY (OrderId) REFERENCES Orders(Id),
 	FOREIGN KEY (ProductItemId) REFERENCES ProductItem(Id),
